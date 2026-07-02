@@ -1,0 +1,1223 @@
+/* ============================================================
+   LIFE DASHBOARD — style.css
+   Sections:
+     1. Custom Properties (Light + Dark Themes)
+     2. Reset & Base
+     3. Typography
+     4. Layout — Header
+     5. Layout — Dashboard Grid
+     6. Component — Cards
+     7. Component — Forms & Buttons
+     8. Component — Focus Timer
+     9. Component — To-Do List
+    10. Component — Quick Links
+    11. Component — Statistics & Progress Bar
+    12. Component — Footer & Quote
+    13. Component — Modals
+    14. Utilities
+    15. Responsive Breakpoints
+   ============================================================ */
+
+
+/* ============================================================
+   1. CUSTOM PROPERTIES
+   ============================================================ */
+
+:root {
+  /* --- Palette: Light Mode --- */
+  --color-bg:           #f0f2f5;
+  --color-surface:      #ffffff;
+  --color-surface-alt:  #f7f8fa;
+  --color-border:       #e2e5ea;
+  --color-text:         #1a1d23;
+  --color-text-muted:   #6b7280;
+  --color-heading:      #111827;
+
+  /* Accent colours */
+  --color-primary:      #4f6ef7;
+  --color-primary-hover:#3b5be6;
+  --color-success:      #22c55e;
+  --color-success-hover:#16a34a;
+  --color-warning:      #f59e0b;
+  --color-warning-hover:#d97706;
+  --color-danger:       #ef4444;
+  --color-danger-hover: #dc2626;
+  --color-secondary:    #6b7280;
+  --color-secondary-hover:#4b5563;
+
+  /* Stat card accents */
+  --color-stat-total:     #4f6ef7;
+  --color-stat-completed: #22c55e;
+  --color-stat-pending:   #f59e0b;
+  --color-stat-percent:   #8b5cf6;
+
+  /* Progress bar */
+  --color-progress-track: #e2e5ea;
+  --color-progress-fill:  #4f6ef7;
+
+  /* Shadows */
+  --shadow-sm:  0 1px 3px rgba(0,0,0,.08), 0 1px 2px rgba(0,0,0,.05);
+  --shadow-md:  0 4px 12px rgba(0,0,0,.10), 0 2px 4px rgba(0,0,0,.06);
+  --shadow-lg:  0 10px 30px rgba(0,0,0,.14), 0 4px 8px rgba(0,0,0,.08);
+
+  /* Radii */
+  --radius-sm:  6px;
+  --radius-md:  12px;
+  --radius-lg:  18px;
+  --radius-full:9999px;
+
+  /* Spacing scale */
+  --space-xs:   0.25rem;
+  --space-sm:   0.5rem;
+  --space-md:   1rem;
+  --space-lg:   1.5rem;
+  --space-xl:   2rem;
+  --space-2xl:  3rem;
+
+  /* Typography */
+  --font-sans:  system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+                Roboto, Helvetica, Arial, sans-serif;
+  --font-mono:  ui-monospace, "Cascadia Code", "Fira Code", "Courier New", monospace;
+
+  /* Transitions */
+  --transition-fast:  0.15s ease;
+  --transition-base:  0.25s ease;
+  --transition-slow:  0.4s ease;
+}
+
+/* --- Dark Mode Overrides --- */
+[data-theme="dark"] {
+  --color-bg:           #0f1117;
+  --color-surface:      #1a1d27;
+  --color-surface-alt:  #20232f;
+  --color-border:       #2e3348;
+  --color-text:         #e8eaf0;
+  --color-text-muted:   #9399a8;
+  --color-heading:      #f1f3f9;
+
+  --color-primary:      #6b84f9;
+  --color-primary-hover:#8498fb;
+  --color-success:      #34d36a;
+  --color-success-hover:#4ade80;
+  --color-warning:      #fbbf24;
+  --color-warning-hover:#fcd34d;
+  --color-danger:       #f87171;
+  --color-danger-hover: #fca5a5;
+  --color-secondary:    #9399a8;
+  --color-secondary-hover:#b0b7c6;
+
+  --color-stat-total:     #6b84f9;
+  --color-stat-completed: #34d36a;
+  --color-stat-pending:   #fbbf24;
+  --color-stat-percent:   #a78bfa;
+
+  --color-progress-track: #2e3348;
+  --color-progress-fill:  #6b84f9;
+
+  --shadow-sm:  0 1px 3px rgba(0,0,0,.3),  0 1px 2px rgba(0,0,0,.2);
+  --shadow-md:  0 4px 12px rgba(0,0,0,.4), 0 2px 4px rgba(0,0,0,.3);
+  --shadow-lg:  0 10px 30px rgba(0,0,0,.5),0 4px 8px rgba(0,0,0,.35);
+}
+
+
+/* ============================================================
+   2. RESET & BASE
+   ============================================================ */
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: 16px;
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  font-family: var(--font-sans);
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  line-height: 1.6;
+  min-height: 100vh;
+  transition: background-color var(--transition-base), color var(--transition-base);
+}
+
+ul, ol {
+  list-style: none;
+}
+
+a {
+  color: var(--color-primary);
+  text-decoration: none;
+}
+
+a:hover, a:focus {
+  text-decoration: underline;
+}
+
+img, svg {
+  display: block;
+  max-width: 100%;
+}
+
+button {
+  cursor: pointer;
+  font-family: inherit;
+}
+
+input, select, textarea {
+  font-family: inherit;
+}
+
+/* Focus-visible ring for keyboard users */
+:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+  border-radius: var(--radius-sm);
+}
+
+/* Remove default focus ring for mouse users */
+:focus:not(:focus-visible) {
+  outline: none;
+}
+
+
+
+/* ============================================================
+   3. TYPOGRAPHY
+   ============================================================ */
+
+h1, h2, h3, h4 {
+  color: var(--color-heading);
+  line-height: 1.25;
+  font-weight: 700;
+}
+
+.section-heading {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--color-heading);
+  margin-bottom: var(--space-lg);
+  padding-bottom: var(--space-sm);
+  border-bottom: 2px solid var(--color-border);
+  letter-spacing: 0.01em;
+}
+
+/* Screen-reader only utility */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+
+/* ============================================================
+   4. LAYOUT — HEADER
+   ============================================================ */
+
+.site-header {
+  background-color: var(--color-surface);
+  border-bottom: 1px solid var(--color-border);
+  box-shadow: var(--shadow-sm);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  transition: background-color var(--transition-base), border-color var(--transition-base);
+}
+
+.header-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: var(--space-md) var(--space-xl);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-lg);
+  flex-wrap: wrap;
+}
+
+/* Greeting block */
+.greeting-block {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.greeting-text {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--color-primary);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.user-greeting {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--color-heading);
+  line-height: 1.2;
+}
+
+.clock-time {
+  font-size: 1.1rem;
+  font-weight: 600;
+  font-family: var(--font-mono);
+  color: var(--color-text);
+  letter-spacing: 0.05em;
+}
+
+.clock-date {
+  font-size: 0.8rem;
+  color: var(--color-text-muted);
+}
+
+/* Header controls */
+.header-controls {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+  flex-wrap: wrap;
+}
+
+.name-control {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+}
+
+.name-input {
+  width: 180px;
+}
+
+/* Theme toggle button */
+.btn-icon {
+  background: var(--color-surface-alt);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-full);
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+  transition: background-color var(--transition-fast), border-color var(--transition-fast),
+              transform var(--transition-fast);
+  flex-shrink: 0;
+}
+
+.btn-icon:hover {
+  background-color: var(--color-border);
+  transform: scale(1.1);
+}
+
+/* Show sun in dark mode, moon in light mode */
+[data-theme="light"] .icon-moon { display: none; }
+[data-theme="dark"]  .icon-sun  { display: none; }
+
+
+/* ============================================================
+   5. LAYOUT — DASHBOARD GRID
+   ============================================================ */
+
+.dashboard-grid {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: var(--space-xl);
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: auto;
+  gap: var(--space-xl);
+}
+
+/* Statistics section spans full width */
+.stats-section {
+  grid-column: 1 / -1;
+}
+
+
+/* ============================================================
+   6. COMPONENT — CARDS
+   ============================================================ */
+
+.card {
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-xl);
+  box-shadow: var(--shadow-sm);
+  transition: background-color var(--transition-base), border-color var(--transition-base),
+              box-shadow var(--transition-base);
+}
+
+.card:hover {
+  box-shadow: var(--shadow-md);
+}
+
+
+
+/* ============================================================
+   7. COMPONENT — FORMS & BUTTONS
+   ============================================================ */
+
+/* --- Inputs & Selects --- */
+.form-input,
+.form-select {
+  width: 100%;
+  padding: 0.55rem 0.85rem;
+  background-color: var(--color-surface-alt);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  color: var(--color-text);
+  font-size: 0.9rem;
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast),
+              background-color var(--transition-base);
+  appearance: none;
+  -webkit-appearance: none;
+}
+
+.form-input:hover,
+.form-select:hover {
+  border-color: var(--color-primary);
+}
+
+.form-input:focus,
+.form-select:focus {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(79, 110, 247, 0.18);
+  outline: none;
+  background-color: var(--color-surface);
+}
+
+.form-input::placeholder {
+  color: var(--color-text-muted);
+}
+
+.form-label {
+  display: block;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--color-text-muted);
+  margin-bottom: var(--space-xs);
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+
+.input-sm {
+  padding: 0.4rem 0.7rem;
+  font-size: 0.85rem;
+}
+
+/* --- Buttons --- */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-xs);
+  padding: 0.55rem 1.1rem;
+  border: 1px solid transparent;
+  border-radius: var(--radius-sm);
+  font-size: 0.875rem;
+  font-weight: 600;
+  line-height: 1;
+  white-space: nowrap;
+  transition: background-color var(--transition-fast), border-color var(--transition-fast),
+              color var(--transition-fast), transform var(--transition-fast),
+              box-shadow var(--transition-fast);
+  user-select: none;
+}
+
+.btn:active {
+  transform: scale(0.97);
+}
+
+.btn-sm {
+  padding: 0.4rem 0.8rem;
+  font-size: 0.82rem;
+}
+
+.btn-primary {
+  background-color: var(--color-primary);
+  color: #fff;
+  border-color: var(--color-primary);
+}
+.btn-primary:hover {
+  background-color: var(--color-primary-hover);
+  border-color: var(--color-primary-hover);
+}
+
+.btn-success {
+  background-color: var(--color-success);
+  color: #fff;
+  border-color: var(--color-success);
+}
+.btn-success:hover {
+  background-color: var(--color-success-hover);
+  border-color: var(--color-success-hover);
+}
+
+.btn-warning {
+  background-color: var(--color-warning);
+  color: #fff;
+  border-color: var(--color-warning);
+}
+.btn-warning:hover {
+  background-color: var(--color-warning-hover);
+  border-color: var(--color-warning-hover);
+}
+
+.btn-danger {
+  background-color: var(--color-danger);
+  color: #fff;
+  border-color: var(--color-danger);
+}
+.btn-danger:hover {
+  background-color: var(--color-danger-hover);
+  border-color: var(--color-danger-hover);
+}
+
+.btn-secondary {
+  background-color: var(--color-surface-alt);
+  color: var(--color-text);
+  border-color: var(--color-border);
+}
+.btn-secondary:hover {
+  background-color: var(--color-border);
+}
+
+/* Disabled state */
+.btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* --- Warning message --- */
+.warning-msg {
+  font-size: 0.82rem;
+  color: var(--color-danger);
+  background-color: rgba(239, 68, 68, 0.08);
+  border: 1px solid rgba(239, 68, 68, 0.25);
+  border-radius: var(--radius-sm);
+  padding: var(--space-xs) var(--space-sm);
+  margin-top: var(--space-sm);
+}
+
+[data-theme="dark"] .warning-msg {
+  background-color: rgba(248, 113, 113, 0.12);
+  border-color: rgba(248, 113, 113, 0.3);
+}
+
+/* --- Empty state --- */
+.empty-state {
+  text-align: center;
+  color: var(--color-text-muted);
+  font-size: 0.875rem;
+  padding: var(--space-xl) var(--space-md);
+  border: 2px dashed var(--color-border);
+  border-radius: var(--radius-md);
+  margin-top: var(--space-md);
+}
+
+/* --- Add form layout --- */
+.add-form {
+  display: flex;
+  gap: var(--space-sm);
+  margin-bottom: var(--space-md);
+}
+
+.add-form .form-input {
+  flex: 1;
+}
+
+/* Sort controls */
+.sort-controls {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  margin-bottom: var(--space-md);
+}
+
+.sort-controls .form-label {
+  margin-bottom: 0;
+  white-space: nowrap;
+  text-transform: none;
+  font-size: 0.82rem;
+}
+
+.sort-controls .form-select {
+  max-width: 180px;
+  width: auto;
+}
+
+
+/* ============================================================
+   8. COMPONENT — FOCUS TIMER
+   ============================================================ */
+
+.timer-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: var(--space-lg);
+}
+
+.timer-section .section-heading {
+  width: 100%;
+  text-align: left;
+}
+
+.timer-display {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.1rem;
+  background: var(--color-surface-alt);
+  border: 2px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: var(--space-xl) var(--space-2xl);
+  width: 100%;
+  transition: border-color var(--transition-base), background-color var(--transition-base);
+}
+
+.timer-display.timer-running {
+  border-color: var(--color-success);
+  background-color: rgba(34, 197, 94, 0.05);
+}
+
+[data-theme="dark"] .timer-display.timer-running {
+  background-color: rgba(52, 211, 106, 0.07);
+}
+
+.timer-display.timer-done {
+  border-color: var(--color-primary);
+  background-color: rgba(79, 110, 247, 0.06);
+}
+
+.timer-digits {
+  font-size: clamp(2.8rem, 6vw, 4rem);
+  font-family: var(--font-mono);
+  font-weight: 700;
+  color: var(--color-heading);
+  letter-spacing: 0.02em;
+  line-height: 1;
+  min-width: 2ch;
+  text-align: center;
+}
+
+.timer-colon {
+  font-size: clamp(2.4rem, 5vw, 3.4rem);
+  font-family: var(--font-mono);
+  font-weight: 700;
+  color: var(--color-text-muted);
+  line-height: 1;
+  padding: 0 2px;
+  animation: blink 1s step-start infinite;
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.3; }
+}
+
+.timer-controls {
+  display: flex;
+  gap: var(--space-sm);
+  justify-content: center;
+  flex-wrap: wrap;
+  width: 100%;
+}
+
+.timer-controls .btn {
+  flex: 1;
+  min-width: 80px;
+}
+
+.timer-custom {
+  width: 100%;
+}
+
+.timer-custom .form-label {
+  text-align: left;
+}
+
+.timer-custom-row {
+  display: flex;
+  gap: var(--space-sm);
+}
+
+.timer-custom-row .form-input {
+  flex: 1;
+}
+
+.timer-status {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--color-primary);
+  min-height: 1.4em;
+  text-align: center;
+}
+
+
+/* ============================================================
+   9. COMPONENT — TO-DO LIST
+   ============================================================ */
+
+.todo-section .add-form {
+  flex-wrap: wrap;
+}
+
+/* Generic item list used by both todo and links */
+.item-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+  margin-top: var(--space-sm);
+}
+
+/* Todo item */
+.todo-item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  padding: var(--space-sm) var(--space-md);
+  background-color: var(--color-surface-alt);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  transition: background-color var(--transition-fast), border-color var(--transition-fast),
+              opacity var(--transition-base);
+}
+
+.todo-item:hover {
+  border-color: var(--color-primary);
+}
+
+.todo-item.is-completed {
+  opacity: 0.65;
+  background-color: rgba(34, 197, 94, 0.05);
+  border-color: rgba(34, 197, 94, 0.25);
+}
+
+[data-theme="dark"] .todo-item.is-completed {
+  background-color: rgba(52, 211, 106, 0.07);
+}
+
+/* Checkbox */
+.todo-checkbox {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+  accent-color: var(--color-success);
+  cursor: pointer;
+}
+
+/* Task text */
+.todo-text {
+  flex: 1;
+  font-size: 0.9rem;
+  color: var(--color-text);
+  word-break: break-word;
+  transition: color var(--transition-fast);
+}
+
+.todo-item.is-completed .todo-text {
+  text-decoration: line-through;
+  color: var(--color-text-muted);
+}
+
+/* Item action buttons */
+.item-actions {
+  display: flex;
+  gap: var(--space-xs);
+  flex-shrink: 0;
+}
+
+.btn-icon-sm {
+  background: transparent;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  padding: 0.25rem 0.5rem;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--color-text-muted);
+  transition: background-color var(--transition-fast), color var(--transition-fast),
+              border-color var(--transition-fast);
+  white-space: nowrap;
+}
+
+.btn-icon-sm:hover {
+  background-color: var(--color-border);
+  color: var(--color-text);
+}
+
+.btn-icon-sm.btn-edit:hover {
+  background-color: rgba(79, 110, 247, 0.1);
+  border-color: var(--color-primary);
+  color: var(--color-primary);
+}
+
+.btn-icon-sm.btn-delete:hover {
+  background-color: rgba(239, 68, 68, 0.1);
+  border-color: var(--color-danger);
+  color: var(--color-danger);
+}
+
+
+
+/* ============================================================
+   10. COMPONENT — QUICK LINKS
+   ============================================================ */
+
+.links-form-fields {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+  flex: 1;
+}
+
+.links-section .add-form {
+  align-items: flex-end;
+  gap: var(--space-sm);
+}
+
+.link-item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  padding: var(--space-sm) var(--space-md);
+  background-color: var(--color-surface-alt);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  transition: background-color var(--transition-fast), border-color var(--transition-fast);
+}
+
+.link-item:hover {
+  border-color: var(--color-primary);
+}
+
+.link-open-btn {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  flex: 1;
+  background: transparent;
+  border: none;
+  text-align: left;
+  padding: 0;
+  cursor: pointer;
+  min-width: 0;
+}
+
+.link-name {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--color-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  transition: color var(--transition-fast);
+}
+
+.link-open-btn:hover .link-name {
+  color: var(--color-primary-hover);
+  text-decoration: underline;
+}
+
+.link-url {
+  font-size: 0.75rem;
+  color: var(--color-text-muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+
+/* ============================================================
+   11. COMPONENT — STATISTICS & PROGRESS BAR
+   ============================================================ */
+
+/* Stat grid: 4 cards in one row on large screens */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--space-md);
+  margin-bottom: var(--space-xl);
+}
+
+.stat-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-xs);
+  padding: var(--space-lg) var(--space-md);
+  background-color: var(--color-surface-alt);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  text-align: center;
+  border-top: 3px solid var(--color-stat-total);
+  transition: transform var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.stat-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+.stat-card--completed { border-top-color: var(--color-stat-completed); }
+.stat-card--pending   { border-top-color: var(--color-stat-pending); }
+.stat-card--percent   { border-top-color: var(--color-stat-percent); }
+
+.stat-value {
+  font-size: 2rem;
+  font-weight: 800;
+  color: var(--color-heading);
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+
+.stat-label {
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+/* Progress bar */
+.progress-section {
+  margin-bottom: var(--space-xl);
+}
+
+.progress-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--space-xs);
+}
+
+.progress-label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.progress-percent-label {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--color-primary);
+}
+
+.progress-bar-track {
+  width: 100%;
+  height: 10px;
+  background-color: var(--color-progress-track);
+  border-radius: var(--radius-full);
+  overflow: hidden;
+}
+
+.progress-bar-fill {
+  height: 100%;
+  width: 0%;
+  background-color: var(--color-progress-fill);
+  border-radius: var(--radius-full);
+  transition: width var(--transition-slow);
+}
+
+/* Live Summary block */
+.summary-block {
+  background-color: var(--color-surface-alt);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: var(--space-lg);
+}
+
+.summary-heading {
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin-bottom: var(--space-md);
+}
+
+.summary-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-md) var(--space-xl);
+}
+
+.summary-list li {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+}
+
+.summary-key {
+  font-size: 0.85rem;
+  color: var(--color-text-muted);
+}
+
+.summary-val {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--color-heading);
+}
+
+
+/* ============================================================
+   12. COMPONENT — FOOTER & MOTIVATIONAL QUOTE
+   ============================================================ */
+
+.site-footer {
+  background-color: var(--color-surface);
+  border-top: 1px solid var(--color-border);
+  padding: var(--space-xl);
+  text-align: center;
+  margin-top: var(--space-xl);
+  transition: background-color var(--transition-base), border-color var(--transition-base);
+}
+
+.motivational-quote {
+  max-width: 640px;
+  margin: 0 auto var(--space-md);
+}
+
+.motivational-quote p {
+  font-size: 1rem;
+  font-style: italic;
+  color: var(--color-text-muted);
+  line-height: 1.7;
+}
+
+.motivational-quote p::before { content: "\201C"; }
+.motivational-quote p::after  { content: "\201D"; }
+
+.footer-copy {
+  font-size: 0.78rem;
+  color: var(--color-text-muted);
+}
+
+
+/* ============================================================
+   13. COMPONENT — MODALS
+   ============================================================ */
+
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 500;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-lg);
+  backdrop-filter: blur(3px);
+  -webkit-backdrop-filter: blur(3px);
+  animation: fadeIn var(--transition-fast) ease;
+}
+
+/* Hidden modals use the `hidden` attribute */
+.modal-overlay[hidden] {
+  display: none;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+.modal-box {
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-xl);
+  width: 100%;
+  max-width: 440px;
+  box-shadow: var(--shadow-lg);
+  animation: slideUp var(--transition-base) ease;
+}
+
+@keyframes slideUp {
+  from { transform: translateY(20px); opacity: 0; }
+  to   { transform: translateY(0);    opacity: 1; }
+}
+
+.modal-title {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--color-heading);
+  margin-bottom: var(--space-md);
+}
+
+.modal-body {
+  font-size: 0.9rem;
+  color: var(--color-text);
+  margin-bottom: var(--space-lg);
+}
+
+.modal-actions {
+  display: flex;
+  gap: var(--space-sm);
+  justify-content: flex-end;
+  margin-top: var(--space-lg);
+}
+
+.modal-box .form-label {
+  margin-top: var(--space-md);
+}
+
+.modal-box .form-label:first-of-type {
+  margin-top: 0;
+}
+
+.form-label--spaced {
+  margin-top: var(--space-md);
+}
+
+
+/* ============================================================
+   14. UTILITIES
+   ============================================================ */
+
+/* Visually indicate running timer via body class */
+body.timer-active .timer-display {
+  border-color: var(--color-success);
+}
+
+/* Fade in for dynamically added list items */
+@keyframes itemSlideIn {
+  from { opacity: 0; transform: translateY(-6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.todo-item,
+.link-item {
+  animation: itemSlideIn var(--transition-fast) ease;
+}
+
+
+/* ============================================================
+   15. RESPONSIVE BREAKPOINTS
+   ============================================================ */
+
+/* Tablet — 2 column grid already works, only adjust spacing */
+@media (max-width: 900px) {
+  .header-inner {
+    padding: var(--space-md);
+  }
+
+  .dashboard-grid {
+    padding: var(--space-lg);
+    gap: var(--space-lg);
+  }
+
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* Mobile — single column layout */
+@media (max-width: 640px) {
+  .dashboard-grid {
+    grid-template-columns: 1fr;
+    padding: var(--space-md);
+    gap: var(--space-md);
+  }
+
+  /* Stats spans single column naturally */
+  .stats-section {
+    grid-column: 1;
+  }
+
+  .header-inner {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-md);
+    padding: var(--space-md);
+  }
+
+  .header-controls {
+    width: 100%;
+  }
+
+  .name-control {
+    flex: 1;
+  }
+
+  .name-input {
+    width: 100%;
+    min-width: 0;
+    flex: 1;
+  }
+
+  .add-form {
+    flex-direction: column;
+  }
+
+  .add-form .btn {
+    width: 100%;
+  }
+
+  .timer-controls .btn {
+    flex: 1 1 80px;
+  }
+
+  .timer-digits {
+    font-size: 2.8rem;
+  }
+
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .summary-list {
+    flex-direction: column;
+    gap: var(--space-sm);
+  }
+
+  .modal-box {
+    padding: var(--space-lg);
+  }
+
+  .links-section .add-form {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .sort-controls {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .sort-controls .form-select {
+    max-width: 100%;
+    width: 100%;
+  }
+}
+
+/* Very small screens */
+@media (max-width: 380px) {
+  .stats-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .timer-display {
+    padding: var(--space-lg) var(--space-md);
+  }
+
+  .user-greeting {
+    font-size: 1.1rem;
+  }
+}

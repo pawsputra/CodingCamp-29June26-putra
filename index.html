@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Life Dashboard – organize your day with a focus timer, to-do list, quick links, and productivity statistics." />
+  <title>Life Dashboard</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+  <!-- ===================== HEADER ===================== -->
+  <header class="site-header">
+    <div class="header-inner">
+
+      <!-- Greeting & Clock -->
+      <div class="greeting-block">
+        <p id="greeting-text" class="greeting-text" aria-live="polite">Good Morning</p>
+        <h1 id="user-greeting" class="user-greeting" aria-live="polite">Welcome!</h1>
+        <time id="clock-time" class="clock-time" aria-label="Current time" aria-live="off">00:00:00</time>
+        <p id="clock-date" class="clock-date" aria-live="off">Loading date…</p>
+      </div>
+
+      <!-- Header Controls -->
+      <div class="header-controls">
+
+        <!-- Name Customisation (Challenge 2) -->
+        <div class="name-control">
+          <label for="user-name-input" class="sr-only">Your name</label>
+          <input
+            type="text"
+            id="user-name-input"
+            class="name-input"
+            placeholder="Enter your name…"
+            maxlength="40"
+            aria-label="Enter your name for a personalised greeting"
+          />
+          <button id="save-name-btn" class="btn btn-primary btn-sm" aria-label="Save name">Save</button>
+        </div>
+
+        <!-- Theme Toggle (Challenge 1) -->
+        <button
+          id="theme-toggle-btn"
+          class="btn btn-icon"
+          aria-label="Switch to dark mode"
+          title="Toggle light / dark mode"
+        >
+          <span class="icon-sun" aria-hidden="true">☀️</span>
+          <span class="icon-moon" aria-hidden="true">🌙</span>
+        </button>
+
+      </div>
+    </div>
+  </header>
+
+  <!-- ===================== MAIN CONTENT ===================== -->
+  <main class="dashboard-grid" id="main-content">
+
+    <!-- ===== FOCUS TIMER SECTION ===== -->
+    <section class="card timer-section" id="focus-timer" aria-labelledby="timer-heading">
+      <h2 id="timer-heading" class="section-heading">⏱ Focus Timer</h2>
+
+      <!-- Timer Display -->
+      <div class="timer-display" role="timer" aria-label="Focus timer countdown" aria-live="off">
+        <span id="timer-minutes" class="timer-digits">25</span>
+        <span class="timer-colon" aria-hidden="true">:</span>
+        <span id="timer-seconds" class="timer-digits">00</span>
+      </div>
+
+      <!-- Timer Controls -->
+      <div class="timer-controls" role="group" aria-label="Timer controls">
+        <button id="timer-start-btn" class="btn btn-success" aria-label="Start focus timer">Start</button>
+        <button id="timer-stop-btn"  class="btn btn-warning" aria-label="Stop focus timer">Stop</button>
+        <button id="timer-reset-btn" class="btn btn-secondary" aria-label="Reset focus timer">Reset</button>
+      </div>
+
+      <!-- Custom Duration (Challenge 3) -->
+      <div class="timer-custom">
+        <label for="timer-duration-input" class="form-label">Custom Duration (minutes)</label>
+        <div class="timer-custom-row">
+          <input
+            type="number"
+            id="timer-duration-input"
+            class="form-input input-sm"
+            min="1"
+            max="120"
+            placeholder="e.g. 25"
+            aria-label="Set custom timer duration in minutes"
+          />
+          <button id="timer-set-btn" class="btn btn-primary btn-sm" aria-label="Apply custom timer duration">Set</button>
+        </div>
+      </div>
+
+      <!-- Timer Status Message -->
+      <p id="timer-status" class="timer-status" aria-live="polite" aria-atomic="true"></p>
+    </section>
+
+    <!-- ===== TO-DO LIST SECTION ===== -->
+    <section class="card todo-section" id="todo" aria-labelledby="todo-heading">
+      <h2 id="todo-heading" class="section-heading">✅ To-Do List</h2>
+
+      <!-- Add Task Form -->
+      <form id="todo-form" class="add-form" aria-label="Add a new task" novalidate>
+        <label for="todo-input" class="sr-only">New task</label>
+        <input
+          type="text"
+          id="todo-input"
+          class="form-input"
+          placeholder="Add a new task…"
+          maxlength="120"
+          autocomplete="off"
+          aria-label="New task description"
+          aria-required="true"
+        />
+        <button type="submit" id="todo-add-btn" class="btn btn-primary" aria-label="Add task">Add Task</button>
+      </form>
+
+      <!-- Warning Message (Challenge 4) -->
+      <p id="todo-warning" class="warning-msg" aria-live="assertive" aria-atomic="true" hidden></p>
+
+      <!-- Sort Controls (Challenge 5) -->
+      <div class="sort-controls">
+        <label for="todo-sort-select" class="form-label">Sort by:</label>
+        <select id="todo-sort-select" class="form-select" aria-label="Sort tasks">
+          <option value="newest">Newest First</option>
+          <option value="oldest">Oldest First</option>
+          <option value="completed">Completed First</option>
+          <option value="pending">Pending First</option>
+        </select>
+      </div>
+
+      <!-- Task List -->
+      <ul id="todo-list" class="item-list" aria-label="Task list" aria-live="polite"></ul>
+
+      <!-- Empty State -->
+      <p id="todo-empty" class="empty-state" hidden>No tasks yet. Add your first task.</p>
+    </section>
+
+    <!-- ===== QUICK LINKS SECTION ===== -->
+    <section class="card links-section" id="quick-links" aria-labelledby="links-heading">
+      <h2 id="links-heading" class="section-heading">🔗 Quick Links</h2>
+
+      <!-- Add Link Form -->
+      <form id="links-form" class="add-form" aria-label="Add a new quick link" novalidate>
+        <div class="links-form-fields">
+          <label for="link-name-input" class="sr-only">Website name</label>
+          <input
+            type="text"
+            id="link-name-input"
+            class="form-input"
+            placeholder="Website name…"
+            maxlength="60"
+            autocomplete="off"
+            aria-label="Website name"
+            aria-required="true"
+          />
+          <label for="link-url-input" class="sr-only">Website URL</label>
+          <input
+            type="url"
+            id="link-url-input"
+            class="form-input"
+            placeholder="https://example.com"
+            maxlength="200"
+            autocomplete="off"
+            aria-label="Website URL"
+            aria-required="true"
+          />
+        </div>
+        <button type="submit" id="links-add-btn" class="btn btn-primary" aria-label="Add quick link">Add Link</button>
+      </form>
+
+      <!-- Warning Message -->
+      <p id="links-warning" class="warning-msg" aria-live="assertive" aria-atomic="true" hidden></p>
+
+      <!-- Links List -->
+      <ul id="links-list" class="item-list links-item-list" aria-label="Quick links" aria-live="polite"></ul>
+
+      <!-- Empty State -->
+      <p id="links-empty" class="empty-state" hidden>No quick links added yet.</p>
+    </section>
+
+    <!-- ===== STATISTICS SECTION ===== -->
+    <section class="card stats-section" id="statistics" aria-labelledby="stats-heading">
+      <h2 id="stats-heading" class="section-heading">📊 Productivity Statistics</h2>
+
+      <!-- Stat Cards -->
+      <div class="stats-grid" role="list" aria-label="Productivity statistics">
+
+        <article class="stat-card" role="listitem" aria-label="Total tasks">
+          <span class="stat-value" id="stat-total" aria-live="polite">0</span>
+          <span class="stat-label">Total Tasks</span>
+        </article>
+
+        <article class="stat-card stat-card--completed" role="listitem" aria-label="Completed tasks">
+          <span class="stat-value" id="stat-completed" aria-live="polite">0</span>
+          <span class="stat-label">Completed</span>
+        </article>
+
+        <article class="stat-card stat-card--pending" role="listitem" aria-label="Pending tasks">
+          <span class="stat-value" id="stat-pending" aria-live="polite">0</span>
+          <span class="stat-label">Pending</span>
+        </article>
+
+        <article class="stat-card stat-card--percent" role="listitem" aria-label="Completion percentage">
+          <span class="stat-value" id="stat-percent" aria-live="polite">0%</span>
+          <span class="stat-label">Completion</span>
+        </article>
+
+      </div>
+
+      <!-- Progress Bar -->
+      <div class="progress-section" aria-label="Today's progress">
+        <div class="progress-header">
+          <span class="progress-label">Today's Progress</span>
+          <span id="progress-percent-label" class="progress-percent-label" aria-live="polite">0%</span>
+        </div>
+        <div
+          class="progress-bar-track"
+          role="progressbar"
+          aria-valuenow="0"
+          aria-valuemin="0"
+          aria-valuemax="100"
+          aria-label="Task completion progress"
+          id="progress-bar-track"
+        >
+          <div id="progress-bar-fill" class="progress-bar-fill"></div>
+        </div>
+      </div>
+
+      <!-- Live Dashboard Summary -->
+      <div class="summary-block" aria-label="Live dashboard summary">
+        <h3 class="summary-heading">Live Summary</h3>
+        <ul class="summary-list" aria-label="Dashboard summary details">
+          <li>
+            <span class="summary-key">Active Tasks:</span>
+            <span class="summary-val" id="summary-active" aria-live="polite">0</span>
+          </li>
+          <li>
+            <span class="summary-key">Completed Tasks:</span>
+            <span class="summary-val" id="summary-done" aria-live="polite">0</span>
+          </li>
+          <li>
+            <span class="summary-key">Focus Duration:</span>
+            <span class="summary-val" id="summary-focus" aria-live="polite">25 min</span>
+          </li>
+        </ul>
+      </div>
+
+    </section>
+
+  </main>
+
+  <!-- ===================== FOOTER ===================== -->
+  <footer class="site-footer" role="contentinfo">
+    <blockquote id="motivational-quote" class="motivational-quote" aria-label="Motivational quote of the session">
+      <p id="quote-text"></p>
+    </blockquote>
+    <p class="footer-copy">&copy; <span id="footer-year"></span> Life Dashboard</p>
+  </footer>
+
+  <!-- ===================== MODALS ===================== -->
+
+  <!-- Delete Confirmation Dialog -->
+  <div
+    id="confirm-dialog"
+    class="modal-overlay"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="confirm-title"
+    aria-describedby="confirm-body"
+    hidden
+  >
+    <div class="modal-box">
+      <h2 id="confirm-title" class="modal-title">Confirm Delete</h2>
+      <p id="confirm-body" class="modal-body">Are you sure you want to delete this item?</p>
+      <div class="modal-actions">
+        <button id="confirm-ok-btn"     class="btn btn-danger"     aria-label="Confirm delete">Delete</button>
+        <button id="confirm-cancel-btn" class="btn btn-secondary"  aria-label="Cancel delete">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Edit Task Dialog -->
+  <div
+    id="edit-task-dialog"
+    class="modal-overlay"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="edit-task-title"
+    hidden
+  >
+    <div class="modal-box">
+      <h2 id="edit-task-title" class="modal-title">Edit Task</h2>
+      <label for="edit-task-input" class="form-label">Task description</label>
+      <input
+        type="text"
+        id="edit-task-input"
+        class="form-input"
+        maxlength="120"
+        aria-label="Edit task description"
+      />
+      <p id="edit-task-warning" class="warning-msg" aria-live="assertive" aria-atomic="true" hidden></p>
+      <div class="modal-actions">
+        <button id="edit-task-save-btn"   class="btn btn-primary"   aria-label="Save task edit">Save</button>
+        <button id="edit-task-cancel-btn" class="btn btn-secondary" aria-label="Cancel task edit">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Edit Link Dialog -->
+  <div
+    id="edit-link-dialog"
+    class="modal-overlay"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="edit-link-title"
+    hidden
+  >
+    <div class="modal-box">
+      <h2 id="edit-link-title" class="modal-title">Edit Quick Link</h2>
+      <label for="edit-link-name-input" class="form-label">Website name</label>
+      <input
+        type="text"
+        id="edit-link-name-input"
+        class="form-input"
+        maxlength="60"
+        aria-label="Edit website name"
+      />
+      <label for="edit-link-url-input" class="form-label form-label--spaced">Website URL</label>
+      <input
+        type="url"
+        id="edit-link-url-input"
+        class="form-input"
+        maxlength="200"
+        aria-label="Edit website URL"
+      />
+      <p id="edit-link-warning" class="warning-msg" aria-live="assertive" aria-atomic="true" hidden></p>
+      <div class="modal-actions">
+        <button id="edit-link-save-btn"   class="btn btn-primary"   aria-label="Save link edit">Save</button>
+        <button id="edit-link-cancel-btn" class="btn btn-secondary" aria-label="Cancel link edit">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/script.js"></script>
+</body>
+</html>
